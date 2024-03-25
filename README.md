@@ -25,14 +25,10 @@ Users should be able to:
 - See hover states for all interactive elements on the page
 - View each page and be able to toggle between the tabs to see new information
 
-### Screenshot
-
-![Design preview for the Space tourism website coding challenge](./public/crew_desktop_hurly.jpg)
-
 ### Links
 
-- Solution URL: [Add solution URL here](https://github.com/stuart-pike/spacetourism)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: (https://github.com/stuart-pike/spacetourism](https://github.com/stuart-pike/explore-space/))
+- Live Site URL: (https://6601c40683e1772b22f70f91--xploreouterspace.netlify.app/)
 
 ## My process
 
