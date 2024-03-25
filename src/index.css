@@ -1,0 +1,885 @@
+/* 
+Custom Properties
+*/
+
+:root {
+  --clr-dark: 230 35% 7%;
+  --clr-neutral: 0 0% 96%;
+  --clr-accent: 231 77% 90%;
+
+  /* fonts */
+  --fs-900: clamp(6rem, 7vw + 1rem, 9.375rem);
+  --fs-800: 6.25rem;
+  --fs-700: 3.25rem;
+  --fs-600: 2rem;
+  --fs-500: 1.125rem;
+  --fs-400: 1.125rem;
+  --fs-300: 1rem;
+  --fs-200: 0.875rem;
+
+  /* font-families */
+  --ff-serif: "Bellefair", serif;
+  --ff-sans-cond: "Barlow Condensed", sans-serif;
+  --ff-sans-normal: "Barlow", sans-serif;
+}
+
+/* Note Pad Font Sizes*/
+@media (min-width: 35em) {
+  :root {
+    --fs-800: 5rem;
+    --fs-700: 2.5rem;
+    --fs-600: 2.5rem;
+    --fs-500: 1.5rem;
+    --fs-400: 1rem;
+  }
+}
+/* Desktop Font Sizes*/
+@media (min-width: 45em) {
+  :root {
+    --fs-800: 6.25rem;
+    --fs-700: 3.5rem;
+    --fs-600: 2.875rem;
+    --fs-500: 1.875rem;
+    --fs-400: 1.125rem;
+  }
+}
+/*
+-----------------------------------------
+Reset  
+-----------------------------------------
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Reset margins */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+figure,
+picture {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-weight: 400;
+}
+/* 
+Prevent font size inflation
+https://kilianvalkhof.com/2022/css-html/your-css-reset-needs-text-size-adjust-probably/ 
+https://piccalil.li/blog/a-more-modern-css-reset/
+*/
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+/* 
+Remove list styles on ul, ol elements with a list role, 
+which suggests default styling will be removed 
+*/
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* Set core body defaults */
+body {
+  font-family: var(--ff-sans-normal);
+  font-size: var(--fs-400);
+  color: hsl(var(--clr-neutral));
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+/* make images easier to work with */
+img,
+picutre {
+  max-width: 100%;
+  display: block;
+}
+
+/*
+Set shorter line heights on headings and interactive elements 
+Worth removing/modifying this rule if your font has large ascenders and descenders
+*/
+h1,
+h2,
+h3,
+h4,
+button,
+input,
+label {
+  line-height: 1.5;
+}
+
+/* Balance text wrapping on headings */
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+/*
+A elements that don't have a class get default styles 
+This rule is first making sure the text decoration doesn’t interfere 
+with ascenders and descenders. I think this is mostly default in 
+browsers now, but it’s a good insurance policy to set it too. 
+We like to set links to inherit the currentColor of text too by 
+default at the studio, but if you don’t, you probably want to remove it. 
+*/
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+  color: currentColor;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 
+Make sure textareas without a rows attribute are not tiny
+*/
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+/* 
+Anything that has been anchored to should have extra scroll margin 
+You might want to adjust this if you have a fixed header though.
+*/
+:target {
+  scroll-margin-block: 5ex;
+}
+
+/* 
+remove animations for people who've turned them off
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+------------------------------------------
+Utility Classes 
+------------------------------------------
+*/
+
+.flex {
+  display: flex;
+  gap: var(--gap, 1rem);
+}
+
+.grid {
+  display: grid;
+  gap: var(--gap, 1rem);
+}
+
+.ln-height {
+  line-height: 1.5;
+}
+
+.d-block {
+  display: block;
+}
+/* -----
+* + * all the siblings except the first one, alternatively....
+:not(:first-child) adds specifity
+--------------------------------------------------------------*/
+.flow > *:where(:not(:first-child)) {
+  margin-top: var(--flow-space, 2rem);
+}
+
+.flow--space-small {
+  --flow-space: 2rem;
+}
+
+.container {
+  padding-inline: 2em;
+  margin-inline: auto;
+  max-width: 80rem;
+}
+
+/*
+hides text but allows for screen readers to announce
+there is a button there for visually impaired
+display: none removes from the DOM
+*/
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap; /* added line */
+  border: 0;
+}
+
+.skip-to-content {
+  position: absolute;
+  background: hsl(var(--clr-neutral) / 0.5);
+  color: hsl(var(--clr-dark));
+  padding: 0.25em 0.5em;
+  margin-inline: auto auto;
+  border-radius: 8px;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.skip-to-content:focus {
+  transform: translateY(0);
+}
+/* colors */
+
+.bg-dark {
+  background-color: hsl(var(--clr-dark));
+}
+
+.bg-neutral {
+  background-color: hsl(var(--clr-neutral));
+}
+
+.bg-accent {
+  background-color: hsl(var(--clr-accent));
+}
+
+.bg-none {
+  background: transparent;
+}
+
+.text-dark {
+  color: hsl(var(--clr-dark));
+}
+
+.text-neutral {
+  color: hsl(var(--clr-neutral));
+}
+
+.text-accent {
+  color: hsl(var(--clr-accent));
+}
+
+.example {
+  background-color: hsl(var(--clr-accent) / 0.5);
+}
+
+/* typography */
+
+.ff-serif {
+  font-family: var(--ff-serif);
+}
+.ff-sans-cond {
+  font-family: var(--ff-sans-cond);
+}
+.ff-sans-normal {
+  font-family: var(--ff-sans-normal);
+}
+
+.letter-spacing-1 {
+  letter-spacing: 4.75px;
+}
+.letter-spacing-2 {
+  letter-spacing: 2.7px;
+}
+.letter-spacing-3 {
+  letter-spacing: 2.35px;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.fs-900 {
+  font-size: var(--fs-900);
+}
+.fs-800 {
+  font-size: var(--fs-800);
+}
+.fs-700 {
+  font-size: var(--fs-700);
+}
+.fs-600 {
+  font-size: var(--fs-600);
+}
+.fs-500 {
+  font-size: var(--fs-500);
+}
+.fs-400 {
+  font-size: var(--fs-400);
+}
+.fs-300 {
+  font-size: var(--fs-300);
+}
+.fs-200 {
+  font-size: var(--fs-200);
+}
+
+.fs-900,
+.fs-800,
+.fs-700,
+.fs-600 {
+  line-height: 1.1;
+}
+
+.numbered-title {
+  font-family: var(--ff-sans-cond);
+  font-size: var(--fs-500);
+  text-transform: uppercase;
+  letter-spacing: 4.72px;
+}
+
+.numbered-title span {
+  margin-right: 0.5em;
+  font-weight: 700;
+  color: hsl(var(--clr-neutral) / 0.4);
+}
+
+/*
+------------------------------------------
+Components
+------------------------------------------
+*/
+
+.large-button {
+  font-size: 2rem;
+  position: relative;
+  display: inline-grid;
+  /* justify-content: center;
+  align-items: center; */
+  place-items: center;
+  text-decoration: none;
+  aspect-ratio: 1;
+  padding: 0 2em;
+  border-radius: 50%;
+}
+
+.large-button::after {
+  content: "";
+  position: absolute;
+  /* background-color: blueviolet; */
+  background-color: hsl(var(--clr-neutral) / 0.15);
+  width: 100%; /* Adjust the size of the circle */
+  aspect-ratio: 1;
+  border-radius: 50%; /* Make it a circle */
+  opacity: 0;
+  transition: opacity 200ms linear, transform 650ms ease-in-out;
+}
+
+.large-button:hover::after,
+.large-button:focus::after {
+  opacity: 1;
+  transform: scale(1.5);
+}
+
+/* 
+------------------------------------------------------------------
+Primary Header 
+------------------------------------------------------------------
+*/
+
+.logo {
+  margin: 1.5rem clamp(1.5rem, 5vw, 3.5rem);
+}
+
+.primary-header {
+  justify-content: space-between;
+  align-items: center;
+  /* border: 0.5px solid red; */
+}
+
+.primary-navigation {
+  --gap: clamp(2rem, 6vw, 4rem);
+  --underline-gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: hsl(var(--clr-neutral) / 0.1);
+  backdrop-filter: blur(10px);
+  /* border: 0.5px solid yellowgreen; */
+}
+
+.primary-navigation a {
+  text-decoration: none;
+}
+
+.primary-navigation a > span {
+  font-weight: 700;
+  margin-right: 0.5em;
+}
+
+.mobile-nav-toggle {
+  display: none;
+}
+
+/* max instead of min-width */
+@media (max-width: 35rem) {
+  .primary-navigation {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 100%;
+    flex-direction: column;
+    /* top bottom left and right */
+    inset: 0 0 0 100%; /* move the navbar all the way to the right */
+
+    z-index: 99;
+    --underline-gap: 0.5rem;
+    list-style: none;
+    padding: min(10rem, 30vh) 2rem;
+    margin: 0;
+    background-color: hsl(var(--clr-neutral) / 0.1);
+    /* backdrop-filter: blur(20px); */
+    transform: translateX(0);
+    transition: transform 0.2s ease-in-out; /* Optional: Add a smooth transition */
+  }
+  .primary-navigation[data-visible="true"] {
+    transform: translateX(-70%);
+  }
+  .primary-navigation .underline-indicators .active {
+    border: 0;
+  }
+
+  .mobile-nav-toggle {
+    display: block;
+    position: absolute;
+    z-index: 999;
+    right: 2rem;
+    top: 2rem;
+    background: transparent;
+    border: 0;
+    background-image: url(/logos/icon-hamburger.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 1.5rem;
+    aspect-ratio: 1;
+  }
+
+  .mobile-nav-toggle:focus-visible {
+    outline: 5px solid hsl(var(--clr-accent));
+    outline-offset: 5px;
+  }
+}
+
+@media (min-width: 35em) {
+  .primary-navigation {
+    padding-inline: clamp(2rem, 5vw, 8rem);
+  }
+}
+
+@media (min-width: 35em) and (max-width: 44.999em) {
+  .primary-navigation span {
+    display: none;
+  }
+}
+
+/* This is for the line extending from the navbar to logo */
+@media (min-width: 45em) {
+  .primary-header::after {
+    content: "";
+    z-index: 999;
+    display: block;
+    position: relative;
+    height: 1px;
+    width: 100%;
+    margin-right: -2.5rem;
+    order: 1;
+    background: hsl(var(--clr-neutral) / 0.5);
+  }
+  .primary-navigation {
+    margin-block: 2rem;
+  }
+  nav {
+    order: 2;
+  }
+}
+
+.primary-navigation a {
+  text-decoration: none;
+}
+
+.primary-navigation a > span {
+  margin-right: 0.5em;
+  font-weight: 700;
+}
+
+/* select all direct descendants */
+.underline-indicators > * {
+  cursor: pointer;
+  padding: var(--underline-gap, 0.5rem) 0;
+  border: 0;
+  border-bottom: 0.25rem;
+  border-bottom-style: solid;
+  border-bottom-color: hsl(var(--clr-neutral) / 0);
+  background-color: transparent;
+}
+
+.underline-indicators *:hover,
+.underline-indicators *:focus {
+  border-bottom-color: hsl(var(--clr-neutral) / 0.5);
+  /* Match the border color to the active state */
+}
+
+.underline-indicators > .active,
+.underline-indicators > [aria-selected="true"] {
+  border-bottom-color: hsl(var(--clr-neutral));
+}
+
+.tab-list {
+  --gap: 2rem;
+}
+
+.dot-indicators > * {
+  margin-inline: 0.5rem;
+  cursor: pointer;
+  border: 0;
+  border-radius: 50%;
+  padding: 0.5em;
+  background-color: hsl(var(--clr-neutral) / 0.25);
+}
+
+.dot-indicators > *:hover,
+.dot-indicators > *:focus {
+  background-color: hsl(var(--clr-neutral) / 0.5);
+}
+
+.dot-indicators > [aria-selected="true"] {
+  background-color: hsl(var(--clr-neutral) / 1);
+}
+
+.number-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 2.75rem;
+}
+
+.number-indicators > * {
+  cursor: pointer;
+  width: 2.75rem;
+  font-size: var(--fs-600);
+  padding: 3px 0 0 2px;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: hsl(var(--clr-accent));
+  border: 1px solid hsl(var(--clr-neutral) / 0.25);
+  background-color: hsl(var(--clr-dark));
+}
+
+.number-indicators > *:hover,
+.number-indicators > *:focus {
+  border: 1px solid hsl(var(--clr-neutral) / 1);
+}
+
+.number-indicators > [aria-selected="true"] {
+  color: hsl(var(--clr-dark));
+  background-color: hsl(var(--clr-neutral) / 1);
+}
+
+@media (min-width: 35rem) {
+  .number-indicators > * {
+    width: 3.5rem;
+    font-size: var(--fs-600);
+    padding: 2px 0 0 0px;
+  }
+}
+
+@media (min-width: 45rem) {
+  .number-indicators > * {
+    width: 4rem;
+    font-size: var(--fs-600);
+    padding: 6px 0 0 1px;
+  }
+}
+
+/* This is a class for a div that encapsulates the navigation bar 
+and the grid container for the contents. Background image switching
+is handled in App.jsx where the .layout-container class is located*/
+.layout-container {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom center;
+}
+
+/*
+------------------------------------------
+Layout
+------------------------------------------
+*/
+
+/* Mobile first properties*/
+.grid-container {
+  max-width: 1200px;
+  padding-inline: 1rem; /* prevents text running into edge of display*/
+  display: grid;
+  text-align: center;
+  place-items: center;
+}
+
+.grid-container p:not([class]) {
+  max-width: 50ch;
+}
+
+/* destination layout */
+.numbered-title {
+  grid-area: title;
+}
+
+.grid-container--destination {
+  --flow-space: 2rem;
+  grid-template-areas:
+    "title"
+    "moonImage"
+    "moonNav"
+    "content";
+}
+
+.destination-image {
+  grid-area: moonImage;
+  max-width: 50%;
+  align-self: start;
+  transition: max-width 1s ease; /* Smooth transition for large width changes */
+}
+
+.destination-navbar {
+  grid-area: moonNav;
+}
+
+.destination-info {
+  grid-area: content;
+}
+
+.destination-meta {
+  flex-direction: column;
+  padding-top: 1.5rem;
+  border-top: 1px solid hsl(var(--clr-neutral) / 0.3);
+  margin-top: 1.5rem;
+  padding-bottom: 4rem;
+}
+
+.destination-meta p {
+  font-size: 1.55rem;
+}
+
+/* Crew layout */
+
+.grid-container--crew {
+  --flow-space: 2rem;
+  grid-template-areas:
+    "title"
+    "bio"
+    "crewNav"
+    "portrait";
+}
+
+.crew-bio {
+  grid-area: bio;
+}
+
+.crew-bio h2 {
+  opacity: 0.5;
+}
+
+.crew-navbar {
+  grid-area: crewNav;
+}
+
+.crew-image {
+  grid-area: portrait;
+  /* border: 1px solid yellowgreen; */
+  transition: max-width 1s ease; /* Smooth transition for width changes */
+}
+
+/* Technology Layout */
+.grid-container--technology {
+  padding-inline: 0rem; /* prevents text running into edge of display*/
+
+  --flow-space: 2rem;
+  align-self: start;
+  grid-template-areas:
+    "title"
+    "techImage"
+    "techNav"
+    "info";
+}
+.technology-title {
+  margin-left: 1rem;
+  grid-area: title;
+}
+
+.technology-image {
+  grid-area: techImage;
+  /* border: 2px solid red; */
+}
+
+.technology-navbar {
+  grid-area: techNav;
+}
+.technology-info h3 {
+  opacity: 0.65;
+}
+.technology-info {
+  grid-area: info;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 35em) {
+  .primary-header {
+    margin-bottom: 2rem;
+  }
+
+  .numbered-title {
+    justify-self: start;
+    padding-left: 2rem;
+  }
+
+  .destination-meta {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .destination-image {
+    min-width: 60%;
+  }
+  .crew-image {
+    align-self: self-end;
+    max-width: 70%;
+  }
+
+  @media (min-width: 45em) {
+    .grid-container {
+      max-width: 1300px;
+      justify-self: center;
+      text-align: left;
+      column-gap: var(--container-gap, 2rem);
+      grid-template-columns: minmax(1rem, 1fr) repeat(2, minmax(0, 80rem)) minmax(
+          1rem,
+          1fr
+        );
+    }
+    .numbered-title {
+      padding-left: 0;
+    }
+
+    .grid-container--home {
+      padding-bottom: max(6rem, 20vh);
+      align-items: end;
+    }
+
+    .grid-container--home > *:first-child {
+      grid-column: 2;
+    }
+
+    .grid-container--home > *:last-child {
+      grid-column: 3;
+    }
+
+    .grid-container--destination {
+      justify-items: start;
+      align-self: start;
+      grid-template-rows: min-content 5rem;
+      grid-template-areas:
+        ". title title ."
+        ". . . ."
+        ". moonImage moonNav ."
+        ". moonImage content .";
+    }
+
+    .destination-image {
+      min-width: 90%;
+    }
+
+    .destination-navbar {
+      grid-area: moonNav;
+    }
+
+    .destination-meta {
+      --gap: min(6vw, 6rem);
+      justify-content: start;
+    }
+
+    .grid-container--crew {
+      justify-items: start;
+      column-gap: 2rem;
+      align-items: start;
+      grid-template-rows: minmax(5rem, 10rem) 20rem 1fr;
+      grid-template-columns: minmax(1rem, 1fr) minmax(0, 60%) minmax(0, 40%) minmax(
+          1rem,
+          1fr
+        );
+      grid-template-areas:
+        ". title portrait ."
+        ". bio portrait ."
+        ". crewNav portrait .";
+    }
+
+    .crew-bio {
+      align-self: start;
+      overflow: auto; /* Enable scrolling if content overflows */
+      max-height: 400px; /* Example fixed height */
+    }
+    .crew-navbar {
+      align-items: start;
+    }
+    .crew-image {
+      grid-column: span 2;
+      align-self: end;
+      /* justify-self: center; */
+      max-width: 100%;
+    }
+
+    .number-indicators {
+      flex-direction: column;
+    }
+
+    .grid-container--technology {
+      max-width: 1200px;
+      align-items: start;
+      grid-template-rows: min-content 3rem 1fr;
+      grid-template-columns:
+        minmax(0rem, 1rem)
+        minmax(0rem, 2rem)
+        min-content
+        minmax(30%, 40%)
+        45%;
+      grid-template-areas:
+        ". title title title title "
+        ". . . . techImage"
+        ". . techNav info techImage ";
+    }
+    .technology-image {
+      justify-self: right;
+    }
+  }
+}
